@@ -24,10 +24,10 @@ const signInUser = async (req, res) => {
   console.log(req.body);
   try {
     const user = await User.findOne({ email });
+    console.log(user);
     if (!!!user || !password) {
-      sendResponseError(400, "You have to Sign up first !", res);
+      throw Error("You have to Sign up first !");
     }
-
     const same = await checkPassword(password, user.password);
     if (same) {
       let token = newToken(user);
@@ -37,7 +37,7 @@ const signInUser = async (req, res) => {
     sendResponseError(400, "InValid password !", res);
   } catch (err) {
     console.log("EROR", err);
-    sendResponseError(500, `Error ${err}`, res);
+    sendResponseError(400, ` ${err}`, res);
   }
 };
 
